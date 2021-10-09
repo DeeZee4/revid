@@ -7,12 +7,19 @@
 # represents the symbol you (this AI) is on the board
 # either 0 or 1
 #
-from time import sleep
+import random
+
 def turn(board, you):
     #
     # crazy ai goes here
     #
-    sleep(1)
+
+    for _ in range(20):
+        x = random.randint(0,7)
+        y = random.randint(0,7)
+        if board.get(x,y) == -1:
+            return (x,y)
+
     for x in range(8):
         for y in range(8):
             if board.get(x,y) == -1:
