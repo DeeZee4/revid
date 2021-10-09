@@ -1,4 +1,6 @@
 class Settings():
+  ais = ["template", "template"]
+  
   dimensions = (1080,720)
   colors = {
     "bg" : (255,255,255),
@@ -10,3 +12,4 @@ class Settings():
   board = (8,8) # min: (3,3)
   field_divider_proportion = 0.04
   space_around_grid = 0.1
+  

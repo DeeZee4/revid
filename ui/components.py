@@ -1,5 +1,6 @@
 import pygame
 import time
+from game.player_mode import PlayerMode as PM
 
 from settings import Settings as s
 import glob
@@ -53,6 +54,32 @@ class Label():
     self.screen.blit(text_surface, text_rect)
 
 ### Game Specific ##########
+class PlayerModeSwitch():
+  def __init__(self, ui, dimensions, player):
+    self.ui = ui
+    self.x, self.y, self.w, self.h = dimensions
+    self.player = player
+
+  def render(self):
+    def switch(mode:PM):
+      self.player.set_mode(mode)
+
+
+    color_human = (0,160,0)
+    color_ai = (0,0,0)
+
+    if self.player.mode == PM.AI:
+      color_human, color_ai = color_ai, color_human
+
+    btn_human = Button(self.ui.screen, (self.x, self.y, self.w, self.h/2), cbg=color_human, msg="Human", action=lambda: switch(PM.HUMAN), cfg=(255,255,255))
+    btn_human.render()
+    
+    
+    btn_ai = Button(self.ui.screen, (self.x, self.y+self.h/2, self.w, self.h/2), cbg=color_ai, msg="AI", action=lambda: switch(PM.AI), cfg=(255,255,255))
+    btn_ai.render()
+
+
+
 class Field():
   def __init__(self, ui, pos, x, y, r, active=True):
     self.ui = ui
@@ -155,7 +182,7 @@ class Grid():
         pos_y = self.y + (r_h+r_d_h)*y + r_h/2 + r_d_h
 
         active = True
-        if self.ui.game.board.get(x,y) != -1:
+        if self.ui.game.board.get(x,y) != -1 or self.ui.game.next.mode == PM.AI:
           active = False
 
         field = Field(self.ui, (pos_x, pos_y), x, y, r, active=active)

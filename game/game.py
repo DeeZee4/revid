@@ -1,6 +1,8 @@
+from time import time
 from game.game_state import GameState as GS
 from game.board import Board
 from game.player import Player
+from game.player_mode import PlayerMode as PM
 from game.revid import Revid
 
 class Game():
@@ -23,11 +25,18 @@ class Game():
 
         if self.board.is_full():
           self.set_game_state(GS.AFTER)
+        else:
+          if self.next.mode == PM.AI:
+            self.ai_turn()
 
       else:
         self.invalid_turn = (x,y)
         self.winner = [self.get_opponent(self.next)]
         self.set_game_state(GS.AFTER)
+
+  def ai_turn(self):
+    x,y = self.next.ai.get_turn(self.board, self.next)
+    self.turn(x,y)
 
   def set_game_state(self, game_state:GS):
     if game_state == GS.AFTER:
